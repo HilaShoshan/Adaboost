@@ -8,13 +8,9 @@ the line classifies all the points above it as positive (and below it as negativ
 
 class LineClassifier:
 
-    m = 0
-    b = 0
-    up = True  # the default classification is 1 above the line and -1 below it
-
-    def __init__(self, x1, x2, y1, y2, up):
-        self.m = (y2-y1) / (x2-x1)
-        self.b = y1 - self.m*x1
+    def __init__(self, x1, y1, x2, y2, up=True):  # the default classification is 1 above the line and -1 below it
+        self.m = (y2-y1) / (x2-x1)  # calculate m
+        self.b = y1 - self.m*x1  # find b after we have m
         self.up = up
 
     def get_classification(self, x, y):
