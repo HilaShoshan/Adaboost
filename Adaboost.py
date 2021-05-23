@@ -22,7 +22,7 @@ def get_classifiers(S_points):
     return classifiers
 
 
-def compute_error(h_t, points, labels):
+def compute_error(t, best_lines, lines_weights, points, labels):
     n = points.shape[0]
     sum_err = 0
     for i in range(n):
@@ -30,10 +30,23 @@ def compute_error(h_t, points, labels):
         x_i = points.iloc[i].loc['x']
         y_i = points.iloc[i].loc['y']
         label_i = labels.iloc[i].loc['label']
-        if h_t.get_classification(x_i, y_i) != label_i:  # an error in classification
+        if label_i != compute_Ht(t, best_lines, lines_weights, x_i, y_i):  # an error in classification
             indicator = 1
         sum_err += indicator
     return sum_err/n
+
+
+def compute_Ht(t, best_lines, lines_weights, x, y):
+    sigma = 0
+    for i in range(t):
+        result = best_lines[i].get_classification(x, y)
+        sigma += result*lines_weights[i]
+    if sigma < 0:
+        return -1
+    elif sigma > 0:
+        return 1
+    else:
+        return 0
 
 
 def run(points_df, labels_df, k):
@@ -44,6 +57,7 @@ def run(points_df, labels_df, k):
     H = get_classifiers(S_points)
 
     best_lines = list()
+    lines_weights = list()
     n = S_points.shape[0]  # number of points on the train set
     weights = [1/n] * n  # Initialize point weights to 1/n
 
@@ -70,13 +84,14 @@ def run(points_df, labels_df, k):
 
         best_lines.append(h_t)
 
-        # The empirical error of h_t on the training set
-        train_err_lst.append(compute_error(h_t, S_points, S_labels))
-        # The true error of h_t on the test set
-        test_err_lst.append(compute_error(h_t, T_points, T_labels))
-
         # find classifier weight based on its error
         alpha_t = (1/2) * math.log((1-min_weighted_error)/min_weighted_error)
+        lines_weights.append(alpha_t)
+
+        # The empirical error of Ht on the training set
+        train_err_lst.append(compute_error(t, best_lines, lines_weights, S_points, S_labels))
+        # The true error of Ht on the test set
+        test_err_lst.append(compute_error(t, best_lines, lines_weights, T_points, T_labels))
 
         # Update point weights
         z_t = 0  # normalization factor
@@ -86,6 +101,6 @@ def run(points_df, labels_df, k):
             label_i = S_labels.iloc[i].loc['label']
             weights[i] = weights[i] * math.exp(-alpha_t*h_t.get_classification(x_i, y_i)*label_i)
             z_t += weights[i]  # summing the weights
-        weights = map(lambda x: x/z_t, weights)  # normalization
+        weights = list(map(lambda x: x/z_t, weights))  # normalization
 
     return train_err_lst, test_err_lst
