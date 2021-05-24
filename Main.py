@@ -65,7 +65,7 @@ def main():
     epochs_test_errors = list(map(lambda x: x / iterations, epochs_test_errors))
 
     # Plot the change on the (average) error along the epochs to see if there is an overfitting
-    plot_err([*range(8)], epochs_train_errors, epochs_test_errors)
+    plot_err([*range(1, 9)], epochs_train_errors, epochs_test_errors)
 
 
 if __name__ == '__main__':
