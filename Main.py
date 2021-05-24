@@ -1,3 +1,5 @@
+# python version: 3.7
+
 import pandas as pd
 import matplotlib.pyplot as plt
 from Adaboost import *
@@ -44,15 +46,14 @@ def main():
     for i in range(iterations):
         train_err_lst, test_err_lst = run(points_df, labels_df, 8)
 
+        print("train_err_lst: ", train_err_lst)
+        print("test_err_lst: ", test_err_lst)
+
         empirical_errors.extend(train_err_lst)
         test_errors.extend(test_err_lst)
 
         epochs_train_errors = [a + b for a, b in zip(epochs_train_errors, train_err_lst)]
         epochs_test_errors = [a + b for a, b in zip(epochs_test_errors, test_err_lst)]
-
-        print(empirical_errors)
-        print("_______________________________________________")
-        print(test_errors)
 
     print("_______________________________________________")
     print("Empirical Errors Mean: \n", round(average(empirical_errors), 2))
@@ -62,11 +63,6 @@ def main():
     # so we'll divide each one by number of iterations to get the average
     epochs_train_errors = list(map(lambda x: x / iterations, epochs_train_errors))
     epochs_test_errors = list(map(lambda x: x / iterations, epochs_test_errors))
-
-    print("_______________________________________________")
-    print(epochs_train_errors)
-    print("_______________________________________________")
-    print(epochs_test_errors)
 
     # Plot the change on the (average) error along the epochs to see if there is an overfitting
     plot_err([*range(8)], epochs_train_errors, epochs_test_errors)

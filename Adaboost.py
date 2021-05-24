@@ -38,7 +38,7 @@ def compute_error(t, best_lines, lines_weights, points, labels):
 
 def compute_Ht(t, best_lines, lines_weights, x, y):
     sigma = 0
-    for i in range(t):
+    for i in range(t+1):
         result = best_lines[i].get_classification(x, y)
         sigma += result*lines_weights[i]
     if sigma < 0:
