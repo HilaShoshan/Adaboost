@@ -52,7 +52,7 @@ def compute_Ht(t, best_lines, lines_weights, x, y):
 def run(points_df, labels_df, k):
 
     # Split the data randomly into 0.5 test (T) and 0.5 train (S)
-    S_points, T_points, S_labels, T_labels = train_test_split(points_df, labels_df, test_size=0.5, random_state=1)
+    S_points, T_points, S_labels, T_labels = train_test_split(points_df, labels_df, test_size=0.5, shuffle=True)
 
     H = get_classifiers(S_points)
 
