@@ -23,5 +23,7 @@ We've execute 40 runs of Adaboost, and here's the errors results:
 ![](https://github.com/HilaShoshan/Adaboost/blob/main/pictures/errors_graph_results.jpeg)
 
 The 𝑒̅(𝐻𝑘) and 𝑒(𝐻𝑘) averaged over the 40 runs: 
+
 Emprirical errors mean: 0.14
+
 True errors mean: 0.25
