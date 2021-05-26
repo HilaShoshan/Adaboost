@@ -42,7 +42,7 @@ def main():
     epochs_train_errors = [0]*8  # initialize a list of zeros of size 8 (num epochs)
     epochs_test_errors = [0]*8
 
-    iterations = 1  # change to 100!
+    iterations = 40  # change to 100!
     for i in range(iterations):
         train_err_lst, test_err_lst = run(points_df, labels_df, 8)
 
